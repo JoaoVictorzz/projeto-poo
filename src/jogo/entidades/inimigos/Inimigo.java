@@ -58,9 +58,11 @@ public abstract class Inimigo implements ObjetoJogo {
 
     public abstract void mover();
 
-    public abstract void atacar(Nave nave);
+    public void atacar(Nave nave) {
+        nave.receberDano();
+    };
 
-    //Sinaliza que InimigoNave morreu.
+    //Sinaliza que InimigoAzul morreu.
     public void receberDano() {
         this.vivo = false;
     }

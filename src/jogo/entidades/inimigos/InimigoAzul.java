@@ -19,8 +19,4 @@ public class InimigoAzul extends Inimigo {
         posicaoY += velocidade;
     }
 
-    @Override
-    public void atacar(Nave nave) {
-
-    }
 }

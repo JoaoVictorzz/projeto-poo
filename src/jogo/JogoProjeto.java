@@ -13,8 +13,6 @@ import jogo.mecanicas.FabricaInimigos;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +29,8 @@ public class JogoProjeto extends Jogo {
     private Nave nave;
 
     private int pontuacao;
+    private long ultimoAtaqueColisaoInimigo = 0;
+    private static final long COOLDOWN_DANO_RECEBIDO = 1_000_000_000L;
 
     private int framesDesdeUltimoSpawn = 0;
 
@@ -59,6 +59,7 @@ public class JogoProjeto extends Jogo {
         for (Inimigo inimigo : inimigos) {
             inimigo.mover();
         }
+        verificarAtaqueInimigoPorColisao();
 
         verificarColisoesTiroJogador();
 
@@ -156,6 +157,18 @@ public class JogoProjeto extends Jogo {
                     p.marcarColidiu();
                     break;
                 }
+            }
+        }
+    }
+
+    //Todo inimigo causa dano por colisão, verifica se houve colisão entre a nave e qualquer inimigo.
+    private void verificarAtaqueInimigoPorColisao() {
+        long agora = System.nanoTime();
+        for(Inimigo inimigo: inimigos) {
+            if(inimigo.getRetangulo().intersects(nave.getRetangulo()) && agora - ultimoAtaqueColisaoInimigo > COOLDOWN_DANO_RECEBIDO) {
+                inimigo.atacar(nave);
+                ultimoAtaqueColisaoInimigo = agora;
+
             }
         }
     }

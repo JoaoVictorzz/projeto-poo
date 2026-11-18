@@ -24,9 +24,4 @@ public class InimigoCinza extends Inimigo{
         posicaoX += velocidade * direcao;
     }
 
-    @Override
-    public void atacar(Nave nave) {
-        
-    }
-
 }
