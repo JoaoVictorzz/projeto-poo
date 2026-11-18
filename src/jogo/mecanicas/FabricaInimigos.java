@@ -2,7 +2,7 @@ package jogo.mecanicas;
 
 import jogo.entidades.inimigos.Inimigo;
 import jogo.entidades.inimigos.InimigoCinza;
-import jogo.entidades.inimigos.InimigoNave;
+import jogo.entidades.inimigos.InimigoAzul;
 import java.util.Random;
 
 public class FabricaInimigos {
@@ -12,16 +12,17 @@ public class FabricaInimigos {
     public Inimigo criarInimigo(int larguraTela, int alturaTela) {
         switch (sortearTipoInimigo()) {
             case 0 -> {
-                //metodo disso dps
                 double posicaoXInimigo = random.nextDouble(0,
-                        larguraTela - InimigoNave.LARGURA);
+                        larguraTela - InimigoAzul.LARGURA);
 
-                return new InimigoNave(posicaoXInimigo, -InimigoNave.ALTURA);
+                return new InimigoAzul(posicaoXInimigo, -InimigoAzul.ALTURA);
 
             }
             case 1 -> {
+                //Se for true, o inimigo nasce no lado esquerdo.
                 boolean ladoNaEsquerda = random.nextBoolean();
                 double posicaoYinimigo = random.nextDouble(0, alturaTela - InimigoCinza.ALTURA);
+
                 if(ladoNaEsquerda) {
                     return new InimigoCinza(-InimigoCinza.LARGURA, posicaoYinimigo, 1);
                 }

@@ -42,7 +42,7 @@ public class Controles {
         }
     }
 
-    // Atualiza a posição do cursor e armazena suas coordenadas X e Y.
+    //Atualiza a posição do cursor e armazena suas coordenadas X e Y.
     public void atualizarPosicaoMouse(MouseEvent m) {
         mouseY = m.getY();
         mouseX = m.getX();

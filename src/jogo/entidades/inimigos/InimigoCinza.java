@@ -1,5 +1,7 @@
 package jogo.entidades.inimigos;
 
+import jogo.entidades.Nave;
+
 import java.awt.*;
 
 public class InimigoCinza extends Inimigo{
@@ -20,6 +22,11 @@ public class InimigoCinza extends Inimigo{
     @Override
     public void mover() {
         posicaoX += velocidade * direcao;
+    }
+
+    @Override
+    public void atacar(Nave nave) {
+        
     }
 
 }

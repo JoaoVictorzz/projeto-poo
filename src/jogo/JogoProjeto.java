@@ -3,6 +3,7 @@ package jogo;
 import base.Jogo;
 import cenario.Cenario;
 import jogo.entidades.Nave;
+import jogo.entidades.ObjetoJogo;
 import jogo.entidades.Projetil;
 import jogo.entidades.inimigos.Inimigo;
 import jogo.mecanicas.Controles;
@@ -61,8 +62,8 @@ public class JogoProjeto extends Jogo {
 
         verificarColisoesTiroJogador();
 
-        removerProjeteisInativos();
-        removerInimigosInativos();
+        removerObjetosInativos(inimigos);
+        removerObjetosInativos(projeteisJogador);
 
         if (framesDesdeUltimoSpawn > dificuldade.intervaloSpawn(pontuacao)
                 && dificuldade.deveSpawnar(pontuacao)) {
@@ -159,15 +160,10 @@ public class JogoProjeto extends Jogo {
         }
     }
 
-    //Remove projéteis inativos ou que ultrapassaram os limites da tela.
-    private void removerProjeteisInativos() {
-        projeteisJogador.removeIf(projetil ->
-                !projetil.isAtivo() || saiuDaTela(projetil.getRetangulo()));
-    }
-
-    //Remove inimigos que foram mortos/atingidos por um projétil ou que passaram da tela.
-    private void removerInimigosInativos() {
-        inimigos.removeIf(inimigo -> !inimigo.isAtivo() || saiuDaTela(inimigo.getRetangulo()));
+    //Remove objetos inativos ou que saíram da tela.
+    private void removerObjetosInativos(List<? extends ObjetoJogo> lista) {
+        lista.removeIf(objetoJogo -> !objetoJogo.isAtivo() ||
+                saiuDaTela(objetoJogo.getRetangulo()));
     }
 
     //Retorna true se o retângulo passou da tela, considera uma margem adicional (usada para o inimigo

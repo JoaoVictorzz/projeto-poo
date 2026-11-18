@@ -1,11 +1,14 @@
 package jogo.entidades.inimigos;
 
+import jogo.entidades.Nave;
+import jogo.entidades.ObjetoJogo;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public abstract class Inimigo {
+public abstract class Inimigo implements ObjetoJogo {
     protected double posicaoX, posicaoY;
     protected final double velocidade;
     private final int largura, altura;
@@ -25,7 +28,7 @@ public abstract class Inimigo {
         this.imagemInimigo = carregarImagem(caminhoImagem);
     }
 
-    //Lê a imagem do InimigoNave, captura erros se a imagem não for encontrada ou se ocorrer erro na leitura.
+    //Lê a imagem do InimigoNave, captura erros que ocorrerem na leitura da imagem.
     //Devolve null se falhar.
     private BufferedImage carregarImagem(String caminho) {
         try {
@@ -35,33 +38,35 @@ public abstract class Inimigo {
             System.out.println("Erro na leitura da imagem: " + caminho);
             return null;
         }
-        catch(IllegalArgumentException e) {
-            System.out.println("Imagem da nave não encontrada: " + caminho);
-            return null;
-        }
     }
 
+    @Override
     public void desenhar(Graphics2D g) {
         g.drawImage(imagemInimigo, (int) posicaoX, (int) posicaoY, largura, altura, null);
     }
 
+    @Override
+    //Retorna as medidas de InimigoNave, usado no teste de colisões.
+    public Rectangle getRetangulo() {
+        return new Rectangle((int) posicaoX, (int) posicaoY, largura, altura);
+    }
+
+    @Override
+    public boolean isAtivo() {
+        return vivo;
+    }
+
     public abstract void mover();
+
+    public abstract void atacar(Nave nave);
 
     //Sinaliza que InimigoNave morreu.
     public void receberDano() {
         this.vivo = false;
     }
 
-    //Retorna as medidas de InimigoNave, usado no teste de colisões.
-    public Rectangle getRetangulo() {
-        return new Rectangle((int) posicaoX, (int) posicaoY, largura, altura);
-    }
-
     public int getPontos() {
         return pontos;
     }
 
-    public boolean isAtivo() {
-        return vivo;
-    }
 }
