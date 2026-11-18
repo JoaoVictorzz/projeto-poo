@@ -28,7 +28,6 @@ public class JogoProjeto extends Jogo {
 
     private Cenario cenario;
     private Nave nave;
-    private Font fonte;
 
     private int pontuacao;
 
@@ -43,20 +42,6 @@ public class JogoProjeto extends Jogo {
         cenario = new Cenario();
         nave = new Nave((double) getLargura() / 2, (double) getAltura() / 2);
 
-        
-        try {
-            fonte = Font.createFont(
-                    Font.TRUETYPE_FONT, new File("src/recursos/fontes/orbitron.ttf")
-            ).deriveFont(28f);
-        }
-        catch (FontFormatException e) {
-            System.err.println("Formato de fonte inválido.");
-            fonte = new Font("Monospaced", Font.BOLD, 28);
-
-        } catch (IOException e) {
-            System.err.println("Falha na leitura do arquivo da fonte.");
-            fonte = new Font("Monospaced", Font.BOLD, 28);
-        }
     }
 
     @Override
@@ -102,7 +87,7 @@ public class JogoProjeto extends Jogo {
         }
 
         g.setColor(Color.WHITE);
-        g.setFont(fonte);
+        g.setFont(new Font("Monospaced", Font.BOLD, 26));
         g.drawString("Pontuação: " + pontuacao, 30, 40);
         g.drawString("Vidas: " + nave.getVida(), 30, 90);
     }
