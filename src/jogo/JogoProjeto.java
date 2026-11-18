@@ -12,6 +12,8 @@ import jogo.mecanicas.FabricaInimigos;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class JogoProjeto extends Jogo {
 
     private Cenario cenario;
     private Nave nave;
+    private Font fonte;
 
     private int pontuacao;
 
@@ -39,6 +42,21 @@ public class JogoProjeto extends Jogo {
         super.inicializar(largura, altura);
         cenario = new Cenario();
         nave = new Nave((double) getLargura() / 2, (double) getAltura() / 2);
+
+        
+        try {
+            fonte = Font.createFont(
+                    Font.TRUETYPE_FONT, new File("src/recursos/fontes/orbitron.ttf")
+            ).deriveFont(28f);
+        }
+        catch (FontFormatException e) {
+            System.err.println("Formato de fonte inválido.");
+            fonte = new Font("Monospaced", Font.BOLD, 28);
+
+        } catch (IOException e) {
+            System.err.println("Falha na leitura do arquivo da fonte.");
+            fonte = new Font("Monospaced", Font.BOLD, 28);
+        }
     }
 
     @Override
@@ -84,8 +102,9 @@ public class JogoProjeto extends Jogo {
         }
 
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 20));
-        g.drawString("Pontuação: " + pontuacao, 20, 30);
+        g.setFont(fonte);
+        g.drawString("Pontuação: " + pontuacao, 30, 40);
+        g.drawString("Vidas: " + nave.getVida(), 30, 90);
     }
 
     @Override

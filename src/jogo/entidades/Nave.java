@@ -64,6 +64,10 @@ public class Nave {
         return rotacao;
     }
 
+    public int getVida() {
+        return vida;
+    }
+
     //Retornam respectivamente as posições x e y do centro da nave
     public double getCentroX() {
         return posicaoX + LARGURA / 2.0;
