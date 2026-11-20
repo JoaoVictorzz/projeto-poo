@@ -9,6 +9,10 @@ import jogo.entidades.inimigos.Inimigo;
 import jogo.mecanicas.Controles;
 import jogo.mecanicas.Dificuldade;
 import jogo.mecanicas.FabricaInimigos;
+//alterado por Klivert
+import jogo.mecanicas.EstadosDoJogo;
+import telas.TelaFimDeJogo;
+//alterado por Klivert
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -27,6 +31,9 @@ public class JogoProjeto extends Jogo {
 
     private Cenario cenario;
     private Nave nave;
+    //alterado por KLivert
+    private EstadosDoJogo estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
+    //alterado por Klivert
 
     private int pontuacao;
     private long ultimoAtaqueColisaoInimigo = 0;
@@ -47,6 +54,11 @@ public class JogoProjeto extends Jogo {
 
     @Override
     public void atualizar() {
+        //alterado por Klivert
+        if (estado != EstadosDoJogo.JOGO_EM_ANDAMENTO) {
+            return;
+        }
+        //alterado por Klivert
         framesDesdeUltimoSpawn++;
         moverNave();
         nave.guiarDirecaoNave(controles.getMouseX(), controles.getMouseY());
@@ -60,6 +72,13 @@ public class JogoProjeto extends Jogo {
             inimigo.mover();
         }
         verificarAtaqueInimigoPorColisao();
+
+        //alterado por Klivert
+        if (nave.getVida() <= 0) {
+            estado = EstadosDoJogo.FIM_DE_JOGO;
+            return;
+        }
+        //alterado por Klivert
 
         verificarColisoesTiroJogador();
 
@@ -92,6 +111,12 @@ public class JogoProjeto extends Jogo {
         g.setFont(new Font("Monospaced", Font.BOLD, 26));
         g.drawString("Pontuação: " + pontuacao, 30, 40);
         g.drawString("Vidas: " + nave.getVida(), 30, 90);
+
+        //alterado por Klivert
+        if (estado == EstadosDoJogo.FIM_DE_JOGO) {
+            TelaFimDeJogo.desenhar(g, getLargura(), getAltura(), pontuacao);
+        }
+        //alterado por Klivert
     }
 
     @Override
