@@ -1,9 +1,5 @@
 package jogo.entidades.inimigos;
 
-import jogo.entidades.Nave;
-
-import java.awt.*;
-
 public class InimigoCinza extends Inimigo{
     public static final int LARGURA = 60;
     public static final int ALTURA = 50;

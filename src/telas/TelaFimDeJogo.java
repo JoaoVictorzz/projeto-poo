@@ -8,7 +8,11 @@ public class TelaFimDeJogo {
     public static void desenhar(Graphics2D g, int largura,
                                 int altura, int pontuacao) {
 
-        g.setColor(Color.BLACK);
+        g.setPaint(new LinearGradientPaint(
+                0, 0, 0, altura,
+                new float[]{0f, 0.5f, 1f},
+                new Color[]{Color.BLACK, new Color(36, 19, 56), Color.BLACK}
+        ));
         g.fillRect(0, 0, largura, altura);
 
         g.setColor(Color.RED);
@@ -23,7 +27,7 @@ public class TelaFimDeJogo {
         g.drawString(mensagem, x, y);
 
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Monospaced", Font.BOLD, 24));
+        g.setFont(new Font("Monospaced", Font.BOLD, 30));
 
         String pontos = "Pontuação: " + pontuacao;
         fm = g.getFontMetrics();

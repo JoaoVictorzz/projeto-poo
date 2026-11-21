@@ -9,10 +9,8 @@ import jogo.entidades.inimigos.Inimigo;
 import jogo.mecanicas.Controles;
 import jogo.mecanicas.Dificuldade;
 import jogo.mecanicas.FabricaInimigos;
-//alterado por Klivert
 import jogo.mecanicas.EstadosDoJogo;
 import telas.TelaFimDeJogo;
-//alterado por Klivert
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -31,13 +29,13 @@ public class JogoProjeto extends Jogo {
 
     private Cenario cenario;
     private Nave nave;
-    //alterado por KLivert
     private EstadosDoJogo estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
-    //alterado por Klivert
 
     private int pontuacao;
-    private long ultimoAtaqueColisaoInimigo = 0;
+    private long instanteUltimoDanoRecebidoPorColisao = 0;
     private static final long COOLDOWN_DANO_RECEBIDO = 1_000_000_000L;
+    private long instanteUltimoDisparo = 0;
+    private static final long COOLDOWN_TIRO_NAVE = 500_000_000L;
 
     private int framesDesdeUltimoSpawn = 0;
 
@@ -54,11 +52,9 @@ public class JogoProjeto extends Jogo {
 
     @Override
     public void atualizar() {
-        //alterado por Klivert
         if (estado != EstadosDoJogo.JOGO_EM_ANDAMENTO) {
             return;
         }
-        //alterado por Klivert
         framesDesdeUltimoSpawn++;
         moverNave();
         nave.guiarDirecaoNave(controles.getMouseX(), controles.getMouseY());
@@ -73,12 +69,10 @@ public class JogoProjeto extends Jogo {
         }
         verificarAtaqueInimigoPorColisao();
 
-        //alterado por Klivert
         if (nave.getVida() <= 0) {
             estado = EstadosDoJogo.FIM_DE_JOGO;
             return;
         }
-        //alterado por Klivert
 
         verificarColisoesTiroJogador();
 
@@ -112,11 +106,9 @@ public class JogoProjeto extends Jogo {
         g.drawString("Pontuação: " + pontuacao, 30, 40);
         g.drawString("Vidas: " + nave.getVida(), 30, 90);
 
-        //alterado por Klivert
         if (estado == EstadosDoJogo.FIM_DE_JOGO) {
             TelaFimDeJogo.desenhar(g, getLargura(), getAltura(), pontuacao);
         }
-        //alterado por Klivert
     }
 
     @Override
@@ -136,8 +128,11 @@ public class JogoProjeto extends Jogo {
 
     @Override
     public void mousePressionado(MouseEvent m) {
-        if (m.getButton() == MouseEvent.BUTTON1) {
+        long agora = System.nanoTime();
+        if (m.getButton() == MouseEvent.BUTTON1
+                && agora - instanteUltimoDisparo > COOLDOWN_TIRO_NAVE) {
             adicionarProjetilJogador();
+            instanteUltimoDisparo = agora;
         }
     }
 
@@ -178,9 +173,9 @@ public class JogoProjeto extends Jogo {
                     if (inimigo.isAtivo()) {
                         inimigo.receberDano();
                         pontuacao += inimigo.getPontos();
+                        p.marcarColidiu();
+                        break;
                     }
-                    p.marcarColidiu();
-                    break;
                 }
             }
         }
@@ -189,10 +184,12 @@ public class JogoProjeto extends Jogo {
     //Todo inimigo causa dano por colisão, verifica se houve colisão entre a nave e qualquer inimigo.
     private void verificarAtaqueInimigoPorColisao() {
         long agora = System.nanoTime();
-        for(Inimigo inimigo: inimigos) {
-            if(inimigo.getRetangulo().intersects(nave.getRetangulo()) && agora - ultimoAtaqueColisaoInimigo > COOLDOWN_DANO_RECEBIDO) {
+        for (Inimigo inimigo : inimigos) {
+            if (inimigo.getRetangulo().intersects(nave.getRetangulo())
+                    && agora - instanteUltimoDanoRecebidoPorColisao > COOLDOWN_DANO_RECEBIDO
+                    && inimigo.isAtivo()) {
                 inimigo.atacar(nave);
-                ultimoAtaqueColisaoInimigo = agora;
+                instanteUltimoDanoRecebidoPorColisao = agora;
 
             }
         }
