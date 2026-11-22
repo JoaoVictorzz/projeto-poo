@@ -3,13 +3,15 @@ package jogo.mecanicas;
 import jogo.entidades.inimigos.Inimigo;
 import jogo.entidades.inimigos.InimigoCinza;
 import jogo.entidades.inimigos.InimigoAzul;
+import jogo.entidades.inimigos.InimigoKamikaze;
+import jogo.entidades.Nave;
 import java.util.Random;
 
 public class FabricaInimigos {
     private Random random = new Random();
 
     //Usa o metodo sortearTipoInimigo para definir qual inimigo será criado.
-    public Inimigo criarInimigo(int larguraTela, int alturaTela) {
+    public Inimigo criarInimigo(int larguraTela, int alturaTela, Nave nave) {
         switch (sortearTipoInimigo()) {
             case 0 -> {
                 double posicaoXInimigo = random.nextDouble(0,
@@ -31,6 +33,10 @@ public class FabricaInimigos {
 
                 }
             }
+            case 2 -> {
+                double posicaoXInimigo = random.nextDouble(0, larguraTela-InimigoKamikaze.LARGURA);
+                return new InimigoKamikaze(posicaoXInimigo, -InimigoKamikaze.ALTURA, nave);
+            }
             default -> {
                 throw new IllegalStateException("Inimigo inválido");
             }
@@ -46,6 +52,9 @@ public class FabricaInimigos {
         }
         else if(indice <= 8) {
             return 1;
+        }
+        else if(indice <= 10) {
+            return 2;
         }
         else {
             return 0;

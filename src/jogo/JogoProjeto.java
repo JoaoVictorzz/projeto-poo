@@ -82,7 +82,7 @@ public class JogoProjeto extends Jogo {
         if (framesDesdeUltimoSpawn > dificuldade.intervaloSpawn(pontuacao)
                 && dificuldade.deveSpawnar(pontuacao)) {
 
-            inimigos.add(fabricaInimigos.criarInimigo(getLargura(), getAltura()));
+            inimigos.add(fabricaInimigos.criarInimigo(getLargura(), getAltura(), nave));
             framesDesdeUltimoSpawn = 0;
         }
 
