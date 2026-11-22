@@ -62,7 +62,7 @@ public abstract class Inimigo implements ObjetoJogo {
         nave.receberDano();
     };
 
-    //Sinaliza que InimigoAzul morreu.
+    //Sinaliza que Inimigo morreu.
     public void receberDano() {
         this.vivo = false;
     }
@@ -71,4 +71,7 @@ public abstract class Inimigo implements ObjetoJogo {
         return pontos;
     }
 
+    public BufferedImage getImagemInimigo() {
+        return imagemInimigo;
+    }
 }

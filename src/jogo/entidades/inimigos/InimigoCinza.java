@@ -1,9 +1,9 @@
 package jogo.entidades.inimigos;
 
 public class InimigoCinza extends Inimigo{
-    public static final int LARGURA = 60;
-    public static final int ALTURA = 50;
-    public static final int VELOCIDADE = 14;
+    public static final int LARGURA = 70;
+    public static final int ALTURA = 60;
+    public static final int VELOCIDADE = 15;
     public static final int PONTOS = 7;
     //Sentido do movimento horizontal: 1 = direita, -1 = esquerda;
     private final int direcao;

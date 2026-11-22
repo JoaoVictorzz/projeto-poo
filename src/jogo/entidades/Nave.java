@@ -8,8 +8,8 @@ import java.io.IOException;
 public class Nave implements ObjetoJogo{
     private static final double VELOCIDADE = 12;
     private static final int VIDA_INICIAL = 3;
-    private static final int LARGURA = 40;
-    private static final int ALTURA = 35;
+    private static final int LARGURA = 60;
+    private static final int ALTURA = 50;
     private static final String CAMINHO_IMAGEM = "/recursos/imagens/NaveJogador1.png";
     private final BufferedImage imagemNave;
     private double posicaoX, posicaoY;

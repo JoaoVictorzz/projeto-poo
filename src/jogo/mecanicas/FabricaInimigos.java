@@ -53,7 +53,7 @@ public class FabricaInimigos {
         else if(indice <= 8) {
             return 1;
         }
-        else if(indice <= 10) {
+        else if(indice <= 11) {
             return 2;
         }
         else {

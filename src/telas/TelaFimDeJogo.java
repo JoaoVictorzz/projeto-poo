@@ -11,7 +11,7 @@ public class TelaFimDeJogo {
         g.setPaint(new LinearGradientPaint(
                 0, 0, 0, altura,
                 new float[]{0f, 0.5f, 1f},
-                new Color[]{Color.BLACK, new Color(36, 19, 56), Color.BLACK}
+                new Color[]{Color.BLACK, new Color(Color.DARK_GRAY.getBlue()), Color.BLACK}
         ));
         g.fillRect(0, 0, largura, altura);
 

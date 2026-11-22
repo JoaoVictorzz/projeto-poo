@@ -6,6 +6,7 @@ import jogo.entidades.Nave;
 import jogo.entidades.ObjetoJogo;
 import jogo.entidades.Projetil;
 import jogo.entidades.inimigos.Inimigo;
+import jogo.entidades.inimigos.InimigoKamikaze;
 import jogo.mecanicas.Controles;
 import jogo.mecanicas.Dificuldade;
 import jogo.mecanicas.FabricaInimigos;
