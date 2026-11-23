@@ -6,7 +6,6 @@ import jogo.entidades.Nave;
 import jogo.entidades.ObjetoJogo;
 import jogo.entidades.Projetil;
 import jogo.entidades.inimigos.Inimigo;
-import jogo.entidades.inimigos.InimigoKamikaze;
 import jogo.mecanicas.Controles;
 import jogo.mecanicas.Dificuldade;
 import jogo.mecanicas.FabricaInimigos;
@@ -108,6 +107,14 @@ public class JogoProjeto extends Jogo {
         g.drawString("Vidas: " + nave.getVida(), 30, 90);
 
         if (estado == EstadosDoJogo.FIM_DE_JOGO) {
+            g.setColor(Color.BLACK);
+
+            g.setComposite(AlphaComposite.getInstance(
+                    AlphaComposite.SRC_OVER,
+                    TelaFimDeJogo.getOpacidade()
+            ));
+
+            TelaFimDeJogo.aumentarOpacidade();
             TelaFimDeJogo.desenhar(g, getLargura(), getAltura(), pontuacao);
         }
     }
