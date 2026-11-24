@@ -14,7 +14,7 @@ public abstract class Inimigo implements ObjetoJogo {
     private final int largura, altura;
     private final int pontos;
     private boolean vivo = true;
-    private final BufferedImage imagemInimigo;
+    protected final BufferedImage imagemInimigo;
 
     public Inimigo(double posicaoX, double posicaoY,
                    double velocidade, int largura, int altura,

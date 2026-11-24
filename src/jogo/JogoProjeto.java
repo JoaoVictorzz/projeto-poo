@@ -180,7 +180,9 @@ public class JogoProjeto extends Jogo {
                 if (p.getRetangulo().intersects(inimigo.getRetangulo())) {
                     if (inimigo.isAtivo()) {
                         inimigo.receberDano();
-                        pontuacao += inimigo.getPontos();
+                        if (!inimigo.isAtivo()) {
+                            pontuacao+= inimigo.getPontos();
+                        }
                         p.marcarColidiu();
                         break;
                     }

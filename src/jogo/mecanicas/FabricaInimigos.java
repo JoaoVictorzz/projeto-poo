@@ -1,9 +1,6 @@
 package jogo.mecanicas;
 
-import jogo.entidades.inimigos.Inimigo;
-import jogo.entidades.inimigos.InimigoCinza;
-import jogo.entidades.inimigos.InimigoAzul;
-import jogo.entidades.inimigos.InimigoKamikaze;
+import jogo.entidades.inimigos.*;
 import jogo.entidades.Nave;
 import java.util.Random;
 
@@ -37,6 +34,10 @@ public class FabricaInimigos {
                 double posicaoXInimigo = random.nextDouble(0, larguraTela-InimigoKamikaze.LARGURA);
                 return new InimigoKamikaze(posicaoXInimigo, -InimigoKamikaze.ALTURA, nave);
             }
+            case 3 -> {
+                double posicaoXInimigo = random.nextDouble(0, larguraTela- InimigoTanqueMelee.LARGURA);
+                return new InimigoTanqueMelee(posicaoXInimigo, -InimigoTanqueMelee.ALTURA, nave);
+            }
             default -> {
                 throw new IllegalStateException("Inimigo inválido");
             }
@@ -55,6 +56,9 @@ public class FabricaInimigos {
         }
         else if(indice <= 11) {
             return 2;
+        }
+        else if(indice <= 14){
+            return 3;
         }
         else {
             return 0;
