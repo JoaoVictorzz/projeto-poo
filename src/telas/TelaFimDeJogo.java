@@ -4,13 +4,13 @@ package telas;
 import java.awt.*;
 
 public class TelaFimDeJogo {
-    private static float opacidade = 0.0f;
+    private  float opacidade = 0.0f;
 
-    public static float getOpacidade() {
+    public float getOpacidade() {
         return opacidade;
     }
 
-    public static void aumentarOpacidade() {
+    public  void aumentarOpacidade() {
         if (opacidade < 1.0f) {
             opacidade += 0.01f;
             if(opacidade > 1.0f) {
@@ -19,7 +19,7 @@ public class TelaFimDeJogo {
         }
     }
 
-    public static void desenhar(Graphics2D g, int largura,
+    public void desenhar(Graphics2D g, int largura,
                                 int altura, int pontuacao) {
 
         g.setPaint(new LinearGradientPaint(

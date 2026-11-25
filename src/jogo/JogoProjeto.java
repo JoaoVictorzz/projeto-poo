@@ -11,6 +11,7 @@ import jogo.mecanicas.Dificuldade;
 import jogo.mecanicas.FabricaInimigos;
 import jogo.mecanicas.EstadosDoJogo;
 import telas.TelaFimDeJogo;
+import telas.TelaInicial;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -27,10 +28,12 @@ public class JogoProjeto extends Jogo {
     private final FabricaInimigos fabricaInimigos = new FabricaInimigos();
     private final Controles controles = new Controles();
 
+    private final TelaInicial telaInicial = new TelaInicial();
+    private final TelaFimDeJogo telaFimDeJogo = new TelaFimDeJogo();
     private Cenario cenario;
     private Nave nave;
     private EstadosDoJogo estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
-    private int faseAtual = 2;
+    private int faseAtual = 1;
 
     private int pontuacao;
     private long instanteUltimoDanoRecebidoPorColisao = 0;
@@ -112,11 +115,11 @@ public class JogoProjeto extends Jogo {
 
             g.setComposite(AlphaComposite.getInstance(
                     AlphaComposite.SRC_OVER,
-                    TelaFimDeJogo.getOpacidade()
+                    telaFimDeJogo.getOpacidade()
             ));
 
-            TelaFimDeJogo.aumentarOpacidade();
-            TelaFimDeJogo.desenhar(g, getLargura(), getAltura(), pontuacao);
+            telaFimDeJogo.aumentarOpacidade();
+            telaFimDeJogo.desenhar(g, getLargura(), getAltura(), pontuacao);
         }
     }
 
