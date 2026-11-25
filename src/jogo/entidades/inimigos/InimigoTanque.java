@@ -4,7 +4,7 @@ import jogo.entidades.Nave;
 
 import java.awt.*;
 
-public class InimigoTanqueMelee extends Inimigo {
+public class InimigoTanque extends Inimigo {
     public static final int LARGURA = 90;
     public static final int ALTURA = 90;
     private static final int VELOCIDADE = 8;
@@ -13,16 +13,16 @@ public class InimigoTanqueMelee extends Inimigo {
     private double rotacao;
     private final Nave alvo;
 
-    public InimigoTanqueMelee(double posicaoX, double posicaoY, Nave alvo) {
+    public InimigoTanque(double posicaoX, double posicaoY, Nave alvo) {
         super(posicaoX, posicaoY, VELOCIDADE, LARGURA, ALTURA,
-                PONTOS, "/recursos/imagens/InimigoTanqueMelee.png");
+                PONTOS, "/recursos/imagensInimigos/InimigoTanque.png");
         this.alvo = alvo;
     }
 
     //O kamikaze vai seguir a nave
     @Override
     public void mover() {
-        this.guiarDirecaoInimigoTanqueMelee(alvo.getCentroY(), alvo.getCentroX());
+        this.guiarDirecaoInimigoTanque(alvo.getCentroY(), alvo.getCentroX());
 
         double distanciaX = alvo.getCentroX() - (posicaoX + LARGURA / 2.0);
         double distanciaY = alvo.getCentroY() - (posicaoY + ALTURA / 2.0);
@@ -53,7 +53,7 @@ public class InimigoTanqueMelee extends Inimigo {
         gCopia.dispose();
     }
 
-    public void guiarDirecaoInimigoTanqueMelee(double centroY, double centroX) {
+    public void guiarDirecaoInimigoTanque(double centroY, double centroX) {
         rotacao = Math.atan2(centroY - getCentroY(), centroX - getCentroX());
     }
 

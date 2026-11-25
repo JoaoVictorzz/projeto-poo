@@ -10,7 +10,7 @@ public class Nave implements ObjetoJogo{
     private static final int VIDA_INICIAL = 3;
     private static final int LARGURA = 60;
     private static final int ALTURA = 50;
-    private static final String CAMINHO_IMAGEM = "/recursos/imagens/NaveJogador1.png";
+    private static final String CAMINHO_IMAGEM = "/recursos/imagensInimigos/NaveJogador1.png";
     private final BufferedImage imagemNave;
     private double posicaoX, posicaoY;
     private int vida;

@@ -30,6 +30,7 @@ public class JogoProjeto extends Jogo {
     private Cenario cenario;
     private Nave nave;
     private EstadosDoJogo estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
+    private int faseAtual = 2;
 
     private int pontuacao;
     private long instanteUltimoDanoRecebidoPorColisao = 0;
@@ -90,7 +91,7 @@ public class JogoProjeto extends Jogo {
 
     @Override
     public void desenhar(Graphics2D g) {
-        cenario.desenhar(g, getLargura(), getAltura());
+        cenario.desenhar(g, getLargura(), getAltura(), faseAtual);
         nave.desenhar(g);
 
         for (Projetil p : projeteisJogador) {

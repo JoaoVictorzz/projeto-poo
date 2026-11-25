@@ -12,21 +12,21 @@ public class FabricaInimigos {
         switch (sortearTipoInimigo()) {
             case 0 -> {
                 double posicaoXInimigo = random.nextDouble(0,
-                        larguraTela - InimigoAzul.LARGURA);
+                        larguraTela - InimigoComum.LARGURA);
 
-                return new InimigoAzul(posicaoXInimigo, -InimigoAzul.ALTURA);
+                return new InimigoComum(posicaoXInimigo, -InimigoComum.ALTURA);
 
             }
             case 1 -> {
                 //Se for true, o inimigo nasce no lado esquerdo.
                 boolean ladoNaEsquerda = random.nextBoolean();
-                double posicaoYinimigo = random.nextDouble(0, alturaTela - InimigoCinza.ALTURA);
+                double posicaoYinimigo = random.nextDouble(0, alturaTela - InimigoVeloz.ALTURA);
 
                 if(ladoNaEsquerda) {
-                    return new InimigoCinza(-InimigoCinza.LARGURA, posicaoYinimigo, 1);
+                    return new InimigoVeloz(-InimigoVeloz.LARGURA, posicaoYinimigo, 1);
                 }
                 else {
-                    return new InimigoCinza(larguraTela, posicaoYinimigo, -1);
+                    return new InimigoVeloz(larguraTela, posicaoYinimigo, -1);
 
                 }
             }
@@ -35,8 +35,8 @@ public class FabricaInimigos {
                 return new InimigoKamikaze(posicaoXInimigo, -InimigoKamikaze.ALTURA, nave);
             }
             case 3 -> {
-                double posicaoXInimigo = random.nextDouble(0, larguraTela- InimigoTanqueMelee.LARGURA);
-                return new InimigoTanqueMelee(posicaoXInimigo, -InimigoTanqueMelee.ALTURA, nave);
+                double posicaoXInimigo = random.nextDouble(0, larguraTela- InimigoTanque.LARGURA);
+                return new InimigoTanque(posicaoXInimigo, -InimigoTanque.ALTURA, nave);
             }
             default -> {
                 throw new IllegalStateException("Inimigo inválido");
