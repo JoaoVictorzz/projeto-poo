@@ -59,4 +59,10 @@ public class TelaInicial {
             throw new RuntimeException("Erro ao carregar imagem: " + caminho, e);
         }
     }
+    public boolean clicouJogar(int mouseX, int mouseY) {
+        return jogar.detectarClique(mouseX, mouseY);
+    }
+    public boolean clicouSair(int mouseX, int mouseY) {
+        return sair.detectarClique(mouseX, mouseY);
+    }
 }

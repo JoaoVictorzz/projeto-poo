@@ -32,7 +32,7 @@ public class JogoProjeto extends Jogo {
     private final TelaFimDeJogo telaFimDeJogo = new TelaFimDeJogo();
     private Cenario cenario;
     private Nave nave;
-    private EstadosDoJogo estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
+    private EstadosDoJogo estado = EstadosDoJogo.TELA_INICIAL;
     private int faseAtual = 1;
 
     private int pontuacao;
@@ -94,6 +94,10 @@ public class JogoProjeto extends Jogo {
 
     @Override
     public void desenhar(Graphics2D g) {
+        if (estado == EstadosDoJogo.TELA_INICIAL) {
+           telaInicial.desenhar(g,getLargura(), getAltura());
+           return;
+        }
         cenario.desenhar(g, getLargura(), getAltura(), faseAtual);
         nave.desenhar(g);
 
@@ -140,6 +144,14 @@ public class JogoProjeto extends Jogo {
 
     @Override
     public void mousePressionado(MouseEvent m) {
+        if(estado == EstadosDoJogo.TELA_INICIAL) {
+            if(telaInicial.clicouJogar(m.getX(), m.getY())) {
+                estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
+            } else if (telaInicial.clicouSair(m.getX(), m.getY())) {
+                System.exit(0);
+            }
+            return;
+        }
         long agora = System.nanoTime();
         if (m.getButton() == MouseEvent.BUTTON1
                 && agora - instanteUltimoDisparo > COOLDOWN_TIRO_NAVE) {
