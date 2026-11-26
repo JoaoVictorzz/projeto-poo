@@ -19,6 +19,10 @@ public class TelaFimDeJogo {
         }
     }
 
+    public void opacidadePadrao() {
+        this.opacidade = 0.0f;
+    }
+
     public void desenhar(Graphics2D g, int largura,
                                 int altura, int pontuacao) {
 

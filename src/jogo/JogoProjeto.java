@@ -6,10 +6,7 @@ import jogo.entidades.Nave;
 import jogo.entidades.ObjetoJogo;
 import jogo.entidades.Projetil;
 import jogo.entidades.inimigos.Inimigo;
-import jogo.mecanicas.Controles;
-import jogo.mecanicas.Dificuldade;
-import jogo.mecanicas.FabricaInimigos;
-import jogo.mecanicas.EstadosDoJogo;
+import jogo.mecanicas.*;
 import telas.TelaFimDeJogo;
 import telas.TelaInicial;
 
@@ -27,6 +24,20 @@ public class JogoProjeto extends Jogo {
     private final Dificuldade dificuldade = new Dificuldade();
     private final FabricaInimigos fabricaInimigos = new FabricaInimigos();
     private final Controles controles = new Controles();
+    private Botao pausar = new Botao(70, 700, 100, 40, "PAUSAR");
+
+    //Painel do pausar.
+    private static final int PAINEL_X = 468;
+    private static final int PAINEL_Y = 150;
+    private static final int PAINEL_LARGURA = 600;
+    private static final int PAINEL_ALTURA = 500;
+
+    private Botao continuar = new Botao(
+            PAINEL_X + (PAINEL_LARGURA - 140) / 2.0,
+            340,140, 50, "CONTINUAR");
+
+    private Botao menu = new Botao(PAINEL_X + (PAINEL_LARGURA - 110) / 2.0,
+            470, 110, 40, "MENU");
 
     private final TelaInicial telaInicial = new TelaInicial();
     private final TelaFimDeJogo telaFimDeJogo = new TelaFimDeJogo();
@@ -56,9 +67,14 @@ public class JogoProjeto extends Jogo {
 
     @Override
     public void atualizar() {
+        if (estado == EstadosDoJogo.FIM_DE_JOGO) {
+            telaFimDeJogo.aumentarOpacidade();
+            return;
+        }
         if (estado != EstadosDoJogo.JOGO_EM_ANDAMENTO) {
             return;
         }
+
         framesDesdeUltimoSpawn++;
         moverNave();
         nave.guiarDirecaoNave(controles.getMouseX(), controles.getMouseY());
@@ -108,22 +124,41 @@ public class JogoProjeto extends Jogo {
         for (Inimigo inimigo : inimigos) {
             inimigo.desenhar(g);
         }
+        if(estado == EstadosDoJogo.PAUSADO) {
+            g.setColor(Color.BLACK);
+            g.setStroke(new BasicStroke(5));
+            g.fillRect(PAINEL_X, PAINEL_Y, PAINEL_LARGURA, PAINEL_ALTURA);
+
+            g.setColor(Color.WHITE);
+            g.drawRect(PAINEL_X, PAINEL_Y, PAINEL_LARGURA, PAINEL_ALTURA);
+            g.setFont(new Font("Monospaced", Font.BOLD, 48));
+            g.drawString("PAUSADO", 667, 250);
+
+            g.setFont(new Font("Monospaced", Font.BOLD, 20));
+            g.setStroke(new BasicStroke(1));
+            continuar.desenhar(g);
+            menu.desenhar(g);
+            g.drawString("Pontuação: " + pontuacao, 510, 620);
+            return;
+        }
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Monospaced", Font.BOLD, 26));
         g.drawString("Pontuação: " + pontuacao, 30, 40);
         g.drawString("Vidas: " + nave.getVida(), 30, 90);
+        pausar.desenhar(g);
+
+
 
         if (estado == EstadosDoJogo.FIM_DE_JOGO) {
-            g.setColor(Color.BLACK);
 
+            g.setColor(Color.BLACK);
             g.setComposite(AlphaComposite.getInstance(
                     AlphaComposite.SRC_OVER,
                     telaFimDeJogo.getOpacidade()
             ));
-
-            telaFimDeJogo.aumentarOpacidade();
             telaFimDeJogo.desenhar(g, getLargura(), getAltura(), pontuacao);
+
         }
     }
 
@@ -152,8 +187,24 @@ public class JogoProjeto extends Jogo {
             }
             return;
         }
+        if (estado == EstadosDoJogo.PAUSADO) {
+            if (continuar.detectarClique(m.getX(), m.getY())) {
+                estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
+            } else if (menu.detectarClique(m.getX(), m.getY())) {
+                reiniciar();
+                estado = EstadosDoJogo.TELA_INICIAL;
+            }
+            return;
+        }
+        if(estado == EstadosDoJogo.JOGO_EM_ANDAMENTO) {
+            if(pausar.detectarClique(m.getX(), m.getY())) {
+                estado = EstadosDoJogo.PAUSADO;
+                return;
+            }
+        }
         long agora = System.nanoTime();
-        if (m.getButton() == MouseEvent.BUTTON1
+        if (estado == EstadosDoJogo.JOGO_EM_ANDAMENTO
+                && m.getButton() == MouseEvent.BUTTON1
                 && agora - instanteUltimoDisparo > COOLDOWN_TIRO_NAVE) {
             adicionarProjetilJogador();
             instanteUltimoDisparo = agora;
@@ -234,4 +285,16 @@ public class JogoProjeto extends Jogo {
                 r.x > getLargura() + MARGEM_FORA_DA_TELA || r.y > getAltura() + MARGEM_FORA_DA_TELA;
 
     }
+
+    private void reiniciar() {
+        nave = new Nave(getLargura() / 2.0, getAltura() / 2.0);
+        inimigos.clear();
+        projeteisJogador.clear();
+        framesDesdeUltimoSpawn = 0;
+        pontuacao = 0;
+        instanteUltimoDanoRecebidoPorColisao = 0;
+        instanteUltimoDisparo = 0;
+        telaFimDeJogo.opacidadePadrao();
+    }
+
 }
