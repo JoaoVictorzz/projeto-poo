@@ -9,6 +9,7 @@ import jogo.entidades.inimigos.Inimigo;
 import jogo.mecanicas.*;
 import telas.TelaFimDeJogo;
 import telas.TelaInicial;
+import telas.TelaPausa;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -26,21 +27,9 @@ public class JogoProjeto extends Jogo {
     private final Controles controles = new Controles();
     private Botao pausar = new Botao(70, 700, 100, 40, "PAUSAR");
 
-    //Painel do pausar.
-    private static final int PAINEL_X = 468;
-    private static final int PAINEL_Y = 150;
-    private static final int PAINEL_LARGURA = 600;
-    private static final int PAINEL_ALTURA = 500;
-
-    private Botao continuar = new Botao(
-            PAINEL_X + (PAINEL_LARGURA - 140) / 2.0,
-            340,140, 50, "CONTINUAR");
-
-    private Botao menu = new Botao(PAINEL_X + (PAINEL_LARGURA - 110) / 2.0,
-            470, 110, 40, "MENU");
-
     private final TelaInicial telaInicial = new TelaInicial();
     private final TelaFimDeJogo telaFimDeJogo = new TelaFimDeJogo();
+    private  TelaPausa telaPausa;
     private Cenario cenario;
     private Nave nave;
     private EstadosDoJogo estado = EstadosDoJogo.TELA_INICIAL;
@@ -60,6 +49,7 @@ public class JogoProjeto extends Jogo {
     @Override
     public void inicializar(int largura, int altura) {
         super.inicializar(largura, altura);
+        telaPausa = new TelaPausa(getLargura(), getAltura());
         cenario = new Cenario();
         nave = new Nave((double) getLargura() / 2, (double) getAltura() / 2);
 
@@ -125,30 +115,14 @@ public class JogoProjeto extends Jogo {
             inimigo.desenhar(g);
         }
         if(estado == EstadosDoJogo.PAUSADO) {
-            g.setColor(Color.BLACK);
-            g.setStroke(new BasicStroke(5));
-            g.fillRect(PAINEL_X, PAINEL_Y, PAINEL_LARGURA, PAINEL_ALTURA);
-
-            g.setColor(Color.WHITE);
-            g.drawRect(PAINEL_X, PAINEL_Y, PAINEL_LARGURA, PAINEL_ALTURA);
-            g.setFont(new Font("Monospaced", Font.BOLD, 48));
-            g.drawString("PAUSADO", 667, 250);
-
-            g.setFont(new Font("Monospaced", Font.BOLD, 20));
-            g.setStroke(new BasicStroke(1));
-            continuar.desenhar(g);
-            menu.desenhar(g);
-            g.drawString("Pontuação: " + pontuacao, 510, 620);
-            return;
+            telaPausa.desenhar(g, getLargura(), getAltura(), pontuacao);
         }
 
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Monospaced", Font.BOLD, 26));
+        g.setFont(new Font("Arial", Font.BOLD, 22));
         g.drawString("Pontuação: " + pontuacao, 30, 40);
         g.drawString("Vidas: " + nave.getVida(), 30, 90);
         pausar.desenhar(g);
-
-
 
         if (estado == EstadosDoJogo.FIM_DE_JOGO) {
 
@@ -188,9 +162,9 @@ public class JogoProjeto extends Jogo {
             return;
         }
         if (estado == EstadosDoJogo.PAUSADO) {
-            if (continuar.detectarClique(m.getX(), m.getY())) {
+            if (telaPausa.clicouContinuar(m.getX(), m.getY())) {
                 estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
-            } else if (menu.detectarClique(m.getX(), m.getY())) {
+            } else if (telaPausa.clicouMenu(m.getX(), m.getY())) {
                 reiniciar();
                 estado = EstadosDoJogo.TELA_INICIAL;
             }

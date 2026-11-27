@@ -20,6 +20,7 @@ public class Botao {
     }
 
     public void desenhar(Graphics2D g) {
+        g.setStroke(new BasicStroke(1));
         g.drawRect((int) x, (int) y, largura, altura);
         FontMetrics fm = g.getFontMetrics();
         int posicaoX =  (int) x + (largura - fm.stringWidth(texto)) / 2;

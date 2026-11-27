@@ -37,7 +37,7 @@ public class TelaInicial {
         g.fillRect(0, 0, largura, altura);
         g.drawImage(imagemFundo, 0, 0, largura, altura, null);
 
-        g.setFont(new Font("Monospaced", Font.BOLD, 70));
+        g.setFont(new Font("Arial", Font.BOLD, 70));
         FontMetrics fm = g.getFontMetrics();
         g.setColor(Color.WHITE);
 

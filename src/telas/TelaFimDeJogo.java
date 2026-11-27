@@ -1,10 +1,14 @@
 
 package telas;
 
+import jogo.mecanicas.Botao;
+
 import java.awt.*;
 
 public class TelaFimDeJogo {
     private  float opacidade = 0.0f;
+    private Botao reiniciar = new Botao(680, 360, 140, 50, "REINICIAR");
+    private Botao menu = new Botao(680, 440, 140, 50, "MENU");
 
     public float getOpacidade() {
         return opacidade;
@@ -53,5 +57,12 @@ public class TelaFimDeJogo {
         x = (largura - fm.stringWidth(pontos)) / 2 - 120;
 
         g.drawString(pontos, x, y + 60);
+    }
+
+    public boolean clicouReiniciar(int mouseX, int mouseY) {
+        return reiniciar.detectarClique(mouseX, mouseY);
+    }
+    public boolean clicouMenu(int mouseX, int mouseY) {
+        return menu.detectarClique(mouseX, mouseY);
     }
 }
