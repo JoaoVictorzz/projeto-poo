@@ -27,12 +27,12 @@ public class JogoProjeto extends Jogo {
     private final Controles controles = new Controles();
     private Botao pausar = new Botao(70, 700, 100, 40, "PAUSAR");
 
-    private final TelaInicial telaInicial = new TelaInicial();
-    private final TelaFimDeJogo telaFimDeJogo = new TelaFimDeJogo();
-    private  TelaPausa telaPausa;
+    private TelaInicial telaInicial;
+    private TelaFimDeJogo telaFimDeJogo;
+    private TelaPausa telaPausa;
     private Cenario cenario;
     private Nave nave;
-    private EstadosDoJogo estado = EstadosDoJogo.TELA_INICIAL;
+    private EstadosDoJogo estado = EstadosDoJogo.MENU;
     private int faseAtual = 1;
 
     private int pontuacao;
@@ -50,6 +50,8 @@ public class JogoProjeto extends Jogo {
     public void inicializar(int largura, int altura) {
         super.inicializar(largura, altura);
         telaPausa = new TelaPausa(getLargura(), getAltura());
+        telaInicial = new TelaInicial(getLargura(), getAltura());
+        telaFimDeJogo = new TelaFimDeJogo(getLargura(), getAltura());
         cenario = new Cenario();
         nave = new Nave((double) getLargura() / 2, (double) getAltura() / 2);
 
@@ -100,9 +102,9 @@ public class JogoProjeto extends Jogo {
 
     @Override
     public void desenhar(Graphics2D g) {
-        if (estado == EstadosDoJogo.TELA_INICIAL) {
-           telaInicial.desenhar(g,getLargura(), getAltura());
-           return;
+        if (estado == EstadosDoJogo.MENU) {
+            telaInicial.desenhar(g, getLargura(), getAltura());
+            return;
         }
         cenario.desenhar(g, getLargura(), getAltura(), faseAtual);
         nave.desenhar(g);
@@ -114,15 +116,18 @@ public class JogoProjeto extends Jogo {
         for (Inimigo inimigo : inimigos) {
             inimigo.desenhar(g);
         }
-        if(estado == EstadosDoJogo.PAUSADO) {
+        if (estado == EstadosDoJogo.PAUSADO) {
             telaPausa.desenhar(g, getLargura(), getAltura(), pontuacao);
+            return;
         }
 
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 22));
-        g.drawString("Pontuação: " + pontuacao, 30, 40);
-        g.drawString("Vidas: " + nave.getVida(), 30, 90);
-        pausar.desenhar(g);
+       if(estado == EstadosDoJogo.JOGO_EM_ANDAMENTO) {
+           g.setColor(Color.WHITE);
+           g.setFont(new Font("Arial", Font.BOLD, 22));
+           g.drawString("Pontuação: " + pontuacao, 30, 40);
+           g.drawString("Vidas: " + nave.getVida(), 30, 90);
+           pausar.desenhar(g);
+       }
 
         if (estado == EstadosDoJogo.FIM_DE_JOGO) {
 
@@ -153,8 +158,8 @@ public class JogoProjeto extends Jogo {
 
     @Override
     public void mousePressionado(MouseEvent m) {
-        if(estado == EstadosDoJogo.TELA_INICIAL) {
-            if(telaInicial.clicouJogar(m.getX(), m.getY())) {
+        if (estado == EstadosDoJogo.MENU) {
+            if (telaInicial.clicouJogar(m.getX(), m.getY())) {
                 estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
             } else if (telaInicial.clicouSair(m.getX(), m.getY())) {
                 System.exit(0);
@@ -166,12 +171,23 @@ public class JogoProjeto extends Jogo {
                 estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
             } else if (telaPausa.clicouMenu(m.getX(), m.getY())) {
                 reiniciar();
-                estado = EstadosDoJogo.TELA_INICIAL;
+                estado = EstadosDoJogo.MENU;
             }
             return;
         }
-        if(estado == EstadosDoJogo.JOGO_EM_ANDAMENTO) {
-            if(pausar.detectarClique(m.getX(), m.getY())) {
+        if(estado == EstadosDoJogo.FIM_DE_JOGO) {
+            if(telaFimDeJogo.clicouReiniciar(m.getX(), m.getY())) {
+                reiniciar();
+                estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
+            }
+            else if(telaFimDeJogo.clicouMenu(m.getX(), m.getY())) {
+                reiniciar();
+                estado = EstadosDoJogo.MENU;
+            }
+            return;
+        }
+        if (estado == EstadosDoJogo.JOGO_EM_ANDAMENTO) {
+            if (pausar.detectarClique(m.getX(), m.getY())) {
                 estado = EstadosDoJogo.PAUSADO;
                 return;
             }
@@ -222,7 +238,7 @@ public class JogoProjeto extends Jogo {
                     if (inimigo.isAtivo()) {
                         inimigo.receberDano();
                         if (!inimigo.isAtivo()) {
-                            pontuacao+= inimigo.getPontos();
+                            pontuacao += inimigo.getPontos();
                         }
                         p.marcarColidiu();
                         break;
@@ -268,7 +284,8 @@ public class JogoProjeto extends Jogo {
         pontuacao = 0;
         instanteUltimoDanoRecebidoPorColisao = 0;
         instanteUltimoDisparo = 0;
-        telaFimDeJogo.opacidadePadrao();
+        telaFimDeJogo.reiniciarOpacidade();
+        faseAtual = 1;
     }
 
 }

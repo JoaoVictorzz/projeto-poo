@@ -30,7 +30,7 @@ public class TelaPausa {
     public void desenhar(Graphics2D g, int largura, int altura, int pontuacao) {
         Composite compositeOriginal = g.getComposite();
 
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.6f));
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, largura, altura);
         g.setComposite(compositeOriginal);
@@ -38,16 +38,17 @@ public class TelaPausa {
         g.setColor(COR_PAINEL);
         g.setStroke(new BasicStroke(5));
         g.fillRoundRect(painelX, painelY, PAINEL_LARGURA, PAINEL_ALTURA, RAIO_BORDA_PAINEL, RAIO_BORDA_PAINEL);
-
         g.setColor(Color.WHITE);
         g.drawRoundRect(painelX, painelY, PAINEL_LARGURA, PAINEL_ALTURA, RAIO_BORDA_PAINEL, RAIO_BORDA_PAINEL);
         g.setFont(new Font("Arial", Font.BOLD, 48));
-        desenharTextoCentralizado(g, "PAUSADO", painelY + TITULO_Y);
+        UtilidadesDesenho.desenharTextoCentralizado(g, "PAUSADO",
+                largura / 2, TITULO_Y + painelY);
 
         g.setFont(new Font("Arial", Font.BOLD, 20));
         botaoContinuar.desenhar(g);
         botaoMenu.desenhar(g);
-        desenharTextoCentralizado(g, "Pontuação: " + pontuacao, painelY + PONTUACAO_Y);
+        UtilidadesDesenho.desenharTextoCentralizado(g, "Pontuação: " + pontuacao,
+                largura / 2,PONTUACAO_Y + painelY);
     }
 
     public boolean clicouContinuar(int mouseX, int mouseY) {
@@ -58,9 +59,4 @@ public class TelaPausa {
         return botaoMenu.detectarClique(x, y);
     }
 
-    private void desenharTextoCentralizado(Graphics2D g, String texto, int y) {
-        FontMetrics medidas = g.getFontMetrics();
-        int x = painelX + (PAINEL_LARGURA - medidas.stringWidth(texto)) / 2;
-        g.drawString(texto, x, y);
-    }
 }

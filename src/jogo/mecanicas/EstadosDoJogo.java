@@ -1,7 +1,7 @@
 package jogo.mecanicas;
 
 public enum EstadosDoJogo {
-    TELA_INICIAL,
+    MENU,
     JOGO_EM_ANDAMENTO,
     FIM_DE_JOGO,
     PAUSADO
