@@ -48,6 +48,16 @@ public class Controles {
         mouseX = m.getX();
     }
 
+    public void reiniciar() {
+        cima = false;
+        baixo = false;
+        esquerda = false;
+        direita = false;
+
+        mouseX = 0;
+        mouseY = 0;
+    }
+
     public boolean isCima() {
         return cima;
     }

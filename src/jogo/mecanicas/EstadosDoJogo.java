@@ -4,5 +4,7 @@ public enum EstadosDoJogo {
     MENU,
     JOGO_EM_ANDAMENTO,
     FIM_DE_JOGO,
-    PAUSADO
+    PAUSADO,
+    FASE_CONCLUIDA1,
+    TRANSICAO
 }

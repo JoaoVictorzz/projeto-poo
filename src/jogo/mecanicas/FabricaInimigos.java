@@ -47,17 +47,18 @@ public class FabricaInimigos {
 
     //Devolve o tipo do inimigo.
     private int sortearTipoInimigo() {
-        int indice = random.nextInt(15) + 1;
-        if(indice <= 5) {
+        int indice = random.nextInt(10);
+
+        if(indice < 4) {
             return 0;
         }
-        else if(indice <= 8) {
+        else if(indice < 6) {
             return 1;
         }
-        else if(indice <= 11) {
+        else if(indice < 7) {
             return 2;
         }
-        else if(indice <= 14){
+        else if(indice <= 8){
             return 3;
         }
         else {

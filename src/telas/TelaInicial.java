@@ -17,6 +17,7 @@ public class TelaInicial {
     private final Botao botaoSair;
     private final BufferedImage imagemFundo;
 
+
     public TelaInicial(int larguraTela, int alturaTela) {
         imagemFundo = carregarImagem("/recursos/imagemTelaInicial.png");
         int xBotao = (larguraTela - BOTAO_LARGURA) / 2;
@@ -32,7 +33,7 @@ public class TelaInicial {
 
         g.setFont(new Font("Arial", Font.BOLD, 70));
         g.setColor(Color.WHITE);
-        UtilidadesDesenho.desenharTextoCentralizado(g, "SPACE SURVIVOR", largura / 2, TITULO_Y);
+        UtilidadesTelas.desenharTextoCentralizado(g, "SPACE SURVIVOR", largura / 2, TITULO_Y);
 
         g.setFont(new Font("Arial", Font.PLAIN, 30));
         botaoJogar.desenhar(g);
@@ -48,19 +49,6 @@ public class TelaInicial {
         }
     }
 
-    public static float getOpacidade() {
-        return opacidade;
-    }
-
-    public static void aumentarOpacidade() {
-        if (opacidade < 1.0f) {
-            opacidade += 0.01f;
-            if (opacidade > 1.0f) {
-                opacidade = 1.0f;
-            }
-        }
-    }
-
     public boolean clicouJogar(int mouseX, int mouseY) {
         return botaoJogar.detectarClique(mouseX, mouseY);
     }
@@ -69,4 +57,15 @@ public class TelaInicial {
         return botaoSair.detectarClique(mouseX, mouseY);
     }
 
+    public float getOpacidade() {
+        return opacidade;
+    }
+
+    public void aumentarOpacidade() {
+        opacidade = UtilidadesTelas.aumentarOpacidade(opacidade);
+    }
+
+    public void reiniciarOpacidade() {
+        opacidade = 0.0f;
+    }
 }

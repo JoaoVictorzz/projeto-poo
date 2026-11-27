@@ -31,12 +31,12 @@ public class TelaFimDeJogo {
 
         g.setColor(COR_TITULO);
         g.setFont(new Font("Arial", Font.BOLD, 50));
-        UtilidadesDesenho.desenharTextoCentralizado(g, "FIM DE JOGO", largura / 2, TITULO_Y);
+        UtilidadesTelas.desenharTextoCentralizado(g, "FIM DE JOGO", largura / 2, TITULO_Y);
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
 
-        UtilidadesDesenho.desenharTextoCentralizado(g, "Pontuação: " + pontuacao,
+        UtilidadesTelas.desenharTextoCentralizado(g, "Pontuação: " + pontuacao,
                 largura / 2, TITULO_Y + DISTANCIA_ENTRE_ELEMENTOS);
 
         botaoReiniciar.desenhar(g);
@@ -56,15 +56,10 @@ public class TelaFimDeJogo {
     }
 
     public void aumentarOpacidade() {
-        if (opacidade < 1.0f) {
-            opacidade += 0.01f;
-            if (opacidade > 1.0f) {
-                opacidade = 1.0f;
-            }
-        }
+        opacidade = UtilidadesTelas.aumentarOpacidade(opacidade);
     }
 
     public void reiniciarOpacidade() {
-        this.opacidade = 0.0f;
+        opacidade = 0.0f;
     }
 }

@@ -17,6 +17,7 @@ public class TelaPausa {
     private final int painelY;
     private final Botao botaoContinuar;
     private final Botao botaoMenu;
+    private float opacidade = 0.0f;
 
     public TelaPausa(int larguraTela, int alturaTela) {
         painelX = (larguraTela - PAINEL_LARGURA) / 2;
@@ -41,13 +42,13 @@ public class TelaPausa {
         g.setColor(Color.WHITE);
         g.drawRoundRect(painelX, painelY, PAINEL_LARGURA, PAINEL_ALTURA, RAIO_BORDA_PAINEL, RAIO_BORDA_PAINEL);
         g.setFont(new Font("Arial", Font.BOLD, 48));
-        UtilidadesDesenho.desenharTextoCentralizado(g, "PAUSADO",
+        UtilidadesTelas.desenharTextoCentralizado(g, "PAUSADO",
                 largura / 2, TITULO_Y + painelY);
 
         g.setFont(new Font("Arial", Font.BOLD, 20));
         botaoContinuar.desenhar(g);
         botaoMenu.desenhar(g);
-        UtilidadesDesenho.desenharTextoCentralizado(g, "Pontuação: " + pontuacao,
+        UtilidadesTelas.desenharTextoCentralizado(g, "Pontuação: " + pontuacao,
                 largura / 2,PONTUACAO_Y + painelY);
     }
 
@@ -57,6 +58,18 @@ public class TelaPausa {
 
     public boolean clicouMenu(int x, int y) {
         return botaoMenu.detectarClique(x, y);
+    }
+
+    public float getOpacidade() {
+        return opacidade;
+    }
+
+    public void aumentarOpacidade() {
+        opacidade = UtilidadesTelas.aumentarOpacidade(opacidade);
+    }
+
+    public void reiniciarOpacidade() {
+        opacidade = 0.0f;
     }
 
 }

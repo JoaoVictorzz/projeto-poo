@@ -3,7 +3,7 @@ package jogo.mecanicas;
 import java.util.Random;
 
 public class Dificuldade {
-    private static final double[] CHANCES_DE_SPAWN = {0.02, 0.08, 0.11, 0.14};
+    private static final double[] CHANCES_DE_SPAWN = {0.02, 0.04, 0.06, 0.10};
     private static final int[] INTERVALOS_DE_FRAME = {35, 30, 20, 15};
     private static final int[] LIMITES_DE_NIVEL = {200, 600, 1000};
     private Random random = new Random();

@@ -7,7 +7,7 @@ import java.awt.*;
 public class InimigoKamikaze extends Inimigo {
     public static final int LARGURA = 60;
     public static final int ALTURA = 60;
-    private static final int VELOCIDADE = 13;
+    private static final int VELOCIDADE = 10;
     private static final int PONTOS = 9;
     private double rotacao;
 
