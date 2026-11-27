@@ -87,7 +87,10 @@ public class JogoProjeto extends Jogo {
         }
 
         verificarColisoesTiroJogador();
-
+        if (pontuacao >= 1300 && faseAtual < 2) {
+            faseAtual = 2;
+            reiniciar();
+        }
         removerObjetosInativos(inimigos);
         removerObjetosInativos(projeteisJogador);
 
@@ -285,7 +288,7 @@ public class JogoProjeto extends Jogo {
         instanteUltimoDanoRecebidoPorColisao = 0;
         instanteUltimoDisparo = 0;
         telaFimDeJogo.reiniciarOpacidade();
-        faseAtual = 1;
+        faseAtual = 2;
     }
 
 }
