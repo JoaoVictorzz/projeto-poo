@@ -15,7 +15,7 @@ public class InimigoTanque extends Inimigo {
 
     public InimigoTanque(double posicaoX, double posicaoY, Nave alvo) {
         super(posicaoX, posicaoY, VELOCIDADE, LARGURA, ALTURA,
-                PONTOS, "/recursos/imagensInimigos/InimigoTanque.png");
+                PONTOS, "/imagensInimigos/InimigoTanque.png");
         this.alvo = alvo;
     }
 

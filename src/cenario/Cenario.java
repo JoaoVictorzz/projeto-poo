@@ -12,13 +12,6 @@ public class Cenario {
     private Random random = new Random();
     private static final int QUANTIDADE_ESTRELAS = 150;
     private static final int TAMANHO_MAXIMO_ESTRELA = 3;
-    private static final int GRADIENTE_CENTRO_X = 180;
-    private static final int GRADIENTE_CENTRO_Y = 220;
-    private static final int RAIO_GRADIENTE = 180;
-    private static final int PLANETA_ROXO_POSICAOX = 180;
-    private static final int PLANETA_ROXO_POSICAOY = 100;
-    private static final int PLANETA_ROXO_LARGURA = 400;
-    private static final int PLANETA_ROXO_ALTURA = 300;
     private double[] posicaoEstrelasX = new double[QUANTIDADE_ESTRELAS];
     private double[] posicaoEstrelasY = new double[QUANTIDADE_ESTRELAS];
     private int[] tamanhoEstrelas = new int[QUANTIDADE_ESTRELAS];
@@ -32,8 +25,8 @@ public class Cenario {
             tamanhoEstrelas[i] = random.nextInt(TAMANHO_MAXIMO_ESTRELA) + 1;
         }
 
-        imagemPlanetaRoxo = carregarImagem("/recursos/imagensPlanetas/planetaRoxo.png");
-        imagemPlanetaAmarelo = carregarImagem("/recursos/imagensPlanetas/planetaAmarelo.png");
+        imagemPlanetaRoxo = carregarImagem("/imagensPlanetas/planetaRoxo.png");
+        imagemPlanetaAmarelo = carregarImagem("/imagensPlanetas/planetaAmarelo.png");
     }
 
     public void desenhar(Graphics2D g, int largura, int altura, int faseAtual) {

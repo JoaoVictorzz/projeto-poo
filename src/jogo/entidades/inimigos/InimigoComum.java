@@ -8,7 +8,7 @@ public class InimigoComum extends Inimigo {
 
     public InimigoComum(double posicaoX, double posicaoY) {
         super(posicaoX, posicaoY, VELOCIDADE, LARGURA, ALTURA,
-                PONTOS, "/recursos/imagensInimigos/inimigoComum.png");
+                PONTOS, "/imagensInimigos/inimigoComum.png");
     }
 
     //Inimigo desce em linha reta.

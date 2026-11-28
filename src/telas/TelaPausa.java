@@ -17,7 +17,6 @@ public class TelaPausa {
     private final int painelY;
     private final Botao botaoContinuar;
     private final Botao botaoMenu;
-    private float opacidade = 0.0f;
 
     public TelaPausa(int larguraTela, int alturaTela) {
         painelX = (larguraTela - PAINEL_LARGURA) / 2;
@@ -58,18 +57,6 @@ public class TelaPausa {
 
     public boolean clicouMenu(int x, int y) {
         return botaoMenu.detectarClique(x, y);
-    }
-
-    public float getOpacidade() {
-        return opacidade;
-    }
-
-    public void aumentarOpacidade() {
-        opacidade = UtilidadesTelas.aumentarOpacidade(opacidade);
-    }
-
-    public void reiniciarOpacidade() {
-        opacidade = 0.0f;
     }
 
 }

@@ -7,10 +7,7 @@ import jogo.entidades.ObjetoJogo;
 import jogo.entidades.Projetil;
 import jogo.entidades.inimigos.Inimigo;
 import jogo.mecanicas.*;
-import telas.TelaFase1Concluida;
-import telas.TelaFimDeJogo;
-import telas.TelaInicial;
-import telas.TelaPausa;
+import telas.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -26,19 +23,21 @@ public class JogoProjeto extends Jogo {
     private final Dificuldade dificuldade = new Dificuldade();
     private final FabricaInimigos fabricaInimigos = new FabricaInimigos();
     private final Controles controles = new Controles();
-    private Botao pausar = new Botao(70, 700, 100, 40, "PAUSAR");
+    private final Botao pausar = new Botao(70, 700, 100, 40, "PAUSAR");
+    private static final int PONTUACAO_FASE_2 = 1300;
+    private static final int PONTUACAO_VITORIA = 1800;
 
     private TelaInicial telaInicial;
     private TelaFimDeJogo telaFimDeJogo;
     private TelaPausa telaPausa;
     private TelaFase1Concluida telaFase1Concluida;
+    private TelaVitoria telaVitoria;
     private Cenario cenario;
     private Nave nave;
     private EstadosDoJogo estado = EstadosDoJogo.MENU;
-    private EstadosDoJogo estadoAposTransicao;
     private int faseAtual = 1;
 
-    private int pontuacao = 1290;
+    private int pontuacao = 0;
     private long instanteUltimoDanoRecebidoPorColisao = 0;
     private static final long COOLDOWN_DANO_RECEBIDO = 1_000_000_000L;
     private long instanteUltimoDisparo = 0;
@@ -46,8 +45,8 @@ public class JogoProjeto extends Jogo {
 
     private int framesDesdeUltimoSpawn = 0;
 
-    private List<Projetil> projeteisJogador = new ArrayList<>();
-    private List<Inimigo> inimigos = new ArrayList<>();
+    private final List<Projetil> projeteisJogador = new ArrayList<>();
+    private final List<Inimigo> inimigos = new ArrayList<>();
 
     @Override
     public void inicializar(int largura, int altura) {
@@ -56,6 +55,7 @@ public class JogoProjeto extends Jogo {
         telaInicial = new TelaInicial(getLargura(), getAltura());
         telaFimDeJogo = new TelaFimDeJogo(getLargura(), getAltura());
         telaFase1Concluida = new TelaFase1Concluida(getLargura(), getAltura());
+        telaVitoria = new TelaVitoria(getLargura(), getAltura());
         cenario = new Cenario();
         nave = new Nave((double) getLargura() / 2, (double) getAltura() / 2);
 
@@ -95,6 +95,7 @@ public class JogoProjeto extends Jogo {
         for (Inimigo inimigo : inimigos) {
             inimigo.mover();
         }
+
         verificarAtaqueInimigoPorColisao();
 
         if (nave.getVida() <= 0) {
@@ -103,7 +104,13 @@ public class JogoProjeto extends Jogo {
         }
 
         verificarColisoesTiroJogador();
-        if (pontuacao >= 1300 && faseAtual < 2) {
+
+        if (pontuacao >= PONTUACAO_VITORIA && faseAtual == 2) {
+            estado = EstadosDoJogo.VITORIA;
+            return;
+        }
+
+        if (pontuacao >= PONTUACAO_FASE_2 && faseAtual < 2) {
             estado = EstadosDoJogo.FASE_CONCLUIDA1;
             return;
         }
@@ -155,29 +162,36 @@ public class JogoProjeto extends Jogo {
             return;
         }
 
-       if(estado == EstadosDoJogo.JOGO_EM_ANDAMENTO) {
-           g.setColor(Color.WHITE);
-           g.setFont(new Font("Arial", Font.BOLD, 22));
-           g.drawString("Pontuação: " + pontuacao, 30, 40);
-           g.drawString("Vidas: " + nave.getVida(), 30, 90);
-           pausar.desenhar(g);
-       }
+        if (estado == EstadosDoJogo.JOGO_EM_ANDAMENTO) {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 22));
+            g.drawString("Pontuação: " + pontuacao, 30, 40);
+            g.drawString("Vidas: " + nave.getVida(), 30, 90);
+            pausar.desenhar(g);
+        }
 
         if (estado == EstadosDoJogo.FASE_CONCLUIDA1) {
             telaFase1Concluida.desenhar(
                     g, getLargura(), getAltura(), pontuacao
             );
+            return;
+        }
+
+        if (estado == EstadosDoJogo.VITORIA) {
+            telaVitoria.desenhar(g, getLargura(), getAltura(), pontuacao);
+            return;
         }
 
         if (estado == EstadosDoJogo.FIM_DE_JOGO) {
+            Composite compositeOriginal = g.getComposite();
 
-            g.setColor(Color.BLACK);
             g.setComposite(AlphaComposite.getInstance(
                     AlphaComposite.SRC_OVER,
                     telaFimDeJogo.getOpacidade()
             ));
             telaFimDeJogo.desenhar(g, getLargura(), getAltura(), pontuacao);
 
+            g.setComposite(compositeOriginal);
         }
     }
 
@@ -219,12 +233,11 @@ public class JogoProjeto extends Jogo {
             return;
         }
 
-        if(estado == EstadosDoJogo.FIM_DE_JOGO) {
-            if(telaFimDeJogo.clicouReiniciar(m.getX(), m.getY())) {
+        if (estado == EstadosDoJogo.FIM_DE_JOGO) {
+            if (telaFimDeJogo.clicouReiniciar(m.getX(), m.getY())) {
                 reiniciar();
                 estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
-            }
-            else if(telaFimDeJogo.clicouMenu(m.getX(), m.getY())) {
+            } else if (telaFimDeJogo.clicouMenu(m.getX(), m.getY())) {
                 reiniciar();
                 estado = EstadosDoJogo.MENU;
             }
@@ -238,10 +251,18 @@ public class JogoProjeto extends Jogo {
             }
         }
 
-        if(estado == EstadosDoJogo.FASE_CONCLUIDA1) {
-            if(telaFase1Concluida.clicouContinuar(m.getX(), m.getY())) {
+        if (estado == EstadosDoJogo.FASE_CONCLUIDA1) {
+            if (telaFase1Concluida.clicouContinuar(m.getX(), m.getY())) {
                 avancarFase2();
                 estado = EstadosDoJogo.JOGO_EM_ANDAMENTO;
+            }
+            return;
+        }
+
+        if (estado == EstadosDoJogo.VITORIA) {
+            if (telaVitoria.clicouMenu(m.getX(), m.getY())) {
+                reiniciar();
+                estado = EstadosDoJogo.MENU;
             }
             return;
         }
@@ -331,28 +352,26 @@ public class JogoProjeto extends Jogo {
     }
 
     private void reiniciar() {
+        limparDados();
         nave = new Nave(getLargura() / 2.0, getAltura() / 2.0);
-        inimigos.clear();
-        projeteisJogador.clear();
-        framesDesdeUltimoSpawn = 0;
         pontuacao = 0;
-        instanteUltimoDanoRecebidoPorColisao = 0;
-        instanteUltimoDisparo = 0;
         telaFimDeJogo.reiniciarOpacidade();
-        controles.reiniciar();
         faseAtual = 1;
     }
 
     public void avancarFase2() {
+        limparDados();
         nave = new Nave(getLargura() / 2.0, getAltura() / 2.0);
+        faseAtual = 2;
+    }
+
+    private void limparDados() {
         inimigos.clear();
         projeteisJogador.clear();
         framesDesdeUltimoSpawn = 0;
         instanteUltimoDanoRecebidoPorColisao = 0;
         instanteUltimoDisparo = 0;
-        telaFimDeJogo.reiniciarOpacidade();
         controles.reiniciar();
-        faseAtual = 2;
     }
 
 }

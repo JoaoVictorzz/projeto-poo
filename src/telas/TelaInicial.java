@@ -19,7 +19,7 @@ public class TelaInicial {
 
 
     public TelaInicial(int larguraTela, int alturaTela) {
-        imagemFundo = carregarImagem("/recursos/imagemTelaInicial.png");
+        imagemFundo = carregarImagem("/imagemTelaInicial.png");
         int xBotao = (larguraTela - BOTAO_LARGURA) / 2;
         int yBotao = (alturaTela - BOTAO_ALTURA) / 2;
         botaoJogar = new Botao(xBotao, yBotao, BOTAO_LARGURA, BOTAO_ALTURA, "JOGAR");

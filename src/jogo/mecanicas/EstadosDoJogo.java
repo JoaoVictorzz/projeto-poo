@@ -6,5 +6,6 @@ public enum EstadosDoJogo {
     FIM_DE_JOGO,
     PAUSADO,
     FASE_CONCLUIDA1,
-    TRANSICAO
+    TRANSICAO,
+    VITORIA
 }

@@ -15,7 +15,7 @@ public class InimigoKamikaze extends Inimigo {
 
     public InimigoKamikaze(double posicaoX, double posicaoY, Nave alvo) {
         super(posicaoX, posicaoY, VELOCIDADE, LARGURA, ALTURA,
-                PONTOS, "/recursos/imagensInimigos/inimigoKamikaze.png");
+                PONTOS, "/imagensInimigos/inimigoKamikaze.png");
         this.alvo = alvo;
     }
 

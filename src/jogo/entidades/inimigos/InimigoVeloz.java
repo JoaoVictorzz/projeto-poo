@@ -10,7 +10,7 @@ public class InimigoVeloz extends Inimigo{
 
     public InimigoVeloz(double posicaoX, double posicaoY, int direcao) {
         super(posicaoX, posicaoY, VELOCIDADE, LARGURA,
-                ALTURA, PONTOS, "/recursos/imagensInimigos/inimigoVeloz.png");
+                ALTURA, PONTOS, "/imagensInimigos/inimigoVeloz.png");
         this.direcao = direcao;
     }
 
