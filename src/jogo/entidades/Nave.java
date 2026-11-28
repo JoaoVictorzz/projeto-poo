@@ -68,7 +68,6 @@ public class Nave implements ObjetoJogo{
     public void guiarDirecaoNave(int mouseX, int mouseY) {
         rotacao = Math.atan2(mouseY - getCentroY(), mouseX - getCentroX());
     }
-
     //Retorna o ângulo atual da nave, usado para posicionar o projétil corretamente.
     public double getAngulo() {
         return rotacao;
@@ -81,7 +80,9 @@ public class Nave implements ObjetoJogo{
     public void receberDano() {
         vida -= 1;
     }
-
+    public void ganharVida(){
+        vida += 1;
+    }
     //Retornam respectivamente as posições x e y do centro da nave
     public double getCentroX() {
         return posicaoX + LARGURA / 2.0;

@@ -8,7 +8,8 @@ import jogo.entidades.Projetil;
 import jogo.entidades.inimigos.Inimigo;
 import jogo.mecanicas.*;
 import telas.*;
-
+import jogo.entidades.powerups.PowerUp;
+import jogo.entidades.powerups.PowerUpVida;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -47,7 +48,7 @@ public class JogoProjeto extends Jogo {
 
     private final List<Projetil> projeteisJogador = new ArrayList<>();
     private final List<Inimigo> inimigos = new ArrayList<>();
-
+    private List<PowerUp> powerUps = new ArrayList<>();
     @Override
     public void inicializar(int largura, int altura) {
         super.inicializar(largura, altura);
@@ -95,7 +96,12 @@ public class JogoProjeto extends Jogo {
         for (Inimigo inimigo : inimigos) {
             inimigo.mover();
         }
-
+        for(PowerUp p : powerUps) {
+            if(p.isAtivo() && p.getRetangulo().intersects(nave.getRetangulo())){
+                p.coletar(nave);
+            }
+        }
+        removerObjetosInativos(powerUps);
         verificarAtaqueInimigoPorColisao();
 
         if (nave.getVida() <= 0) {
@@ -156,6 +162,9 @@ public class JogoProjeto extends Jogo {
 
         for (Inimigo inimigo : inimigos) {
             inimigo.desenhar(g);
+        }
+        for(PowerUp p : powerUps){
+            p.desenhar(g);
         }
         if (estado == EstadosDoJogo.PAUSADO) {
             telaPausa.desenhar(g, getLargura(), getAltura(), pontuacao);
@@ -314,6 +323,10 @@ public class JogoProjeto extends Jogo {
                         inimigo.receberDano();
                         if (!inimigo.isAtivo()) {
                             pontuacao += inimigo.getPontos();
+                            powerUps.add(new PowerUpVida(
+                                    inimigo.getRetangulo().x,
+                                    inimigo.getRetangulo().y
+                            ));
                         }
                         p.marcarColidiu();
                         break;
@@ -368,6 +381,7 @@ public class JogoProjeto extends Jogo {
     private void limparDados() {
         inimigos.clear();
         projeteisJogador.clear();
+        powerUps.clear();
         framesDesdeUltimoSpawn = 0;
         instanteUltimoDanoRecebidoPorColisao = 0;
         instanteUltimoDisparo = 0;
